@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILGenerator", "ILGenerator\ILGenerator.csproj", "{4D00530F-C20F-48D5-903F-3AF98E4F02DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILGenerator.Demo.FullFrameworkDemo", "ILGenerator.Demo.FullFrameworkDemo\ILGenerator.Demo.FullFrameworkDemo.csproj", "{6DF27AC0-A9EE-49DA-B56C-A2C43D345D77}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4D00530F-C20F-48D5-903F-3AF98E4F02DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D00530F-C20F-48D5-903F-3AF98E4F02DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D00530F-C20F-48D5-903F-3AF98E4F02DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D00530F-C20F-48D5-903F-3AF98E4F02DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DF27AC0-A9EE-49DA-B56C-A2C43D345D77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DF27AC0-A9EE-49DA-B56C-A2C43D345D77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DF27AC0-A9EE-49DA-B56C-A2C43D345D77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DF27AC0-A9EE-49DA-B56C-A2C43D345D77}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B9D0B9ED-B955-4A0D-A285-B60B450899C6}
+	EndGlobalSection
+EndGlobal
