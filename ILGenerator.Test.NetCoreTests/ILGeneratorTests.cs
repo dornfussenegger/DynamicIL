@@ -1,19 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ILGenerator.Demo.FullFrameworkDemo
+namespace ILGenerator.Test.NetCoreTests
 {
-    class Program
+    [TestClass]
+    public class ILGeneratorTests
     {
-        static void Main(string[] args)
+
+        [TestMethod]
+        public void SimpleObject()
         {
+            CustomTypeCreator ct = new CustomTypeCreator("testassembly");
+            var cPerson = ct.CreateNewSimpleType("Person");
+            cPerson.AddProperty("FirstName", typeof(string));
+            cPerson.AddProperty("LastName", typeof(string));
+            cPerson.AddProperty("Uid", typeof(Guid));
+            cPerson.AddPropertyGetAndSet();
+
+
+            var types = ct.Build();
+            var tPerson = types.FirstOrDefault(w => w.Name == "Person");
+
+            var iPerson = tPerson.CreateInstanceWithPropertyGetAndSet();
+
+            Guid guid = Guid.NewGuid();
+
+
+            iPerson.SetPropertyValue("FirstName", "Lukas");
+            iPerson.SetPropertyValue("LastName", "Dorn-Fussenegger");
+            iPerson.SetPropertyValue("Uid", guid);
+
+
+            Assert.IsTrue(iPerson.GetPropertyValue<string>("FirstName") == "Lukas");
+            Assert.IsTrue(iPerson.GetPropertyValue<string>("LastName") == "Dorn-Fussenegger");
+            Assert.IsTrue(iPerson.GetPropertyValue<Guid>("Uid") == guid);
 
 
 
-            CustomTypeCreator ct = new CustomTypeCreator("testassembly", "test.dll");
+        }
+
+        [TestMethod]
+        public void CollectionObject()
+        {
+            CustomTypeCreator ct = new CustomTypeCreator("testassembly");
             var cPerson = ct.CreateNewSimpleType("Person");
             cPerson.AddProperty("FirstName", typeof(string));
             cPerson.AddProperty("LastName", typeof(string));
@@ -57,12 +87,12 @@ namespace ILGenerator.Demo.FullFrameworkDemo
 
             }
 
+            var l = wiPerson.GetPropertyValue("ConnectedPersons") as System.Collections.IList;
+            Assert.IsTrue(l.Count == 5);
+            var last = l[4] as Interfaces.IPropertyGetAndSet;
+            Assert.IsTrue(last.GetPropertyValue<string>("FirstName") == "Person4");
 
-            Console.WriteLine(
-                Newtonsoft.Json.JsonConvert.SerializeObject(wiPerson, Newtonsoft.Json.Formatting.Indented)
-                );
 
-            Console.ReadKey();
         }
     }
 }
