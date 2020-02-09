@@ -18,9 +18,9 @@ namespace ILGenerator.Extraction
 
         public void Initialize()
         {
-            myList = (List<string>)CustomTypeBase.CreateInstanceOfType(typeof(List<string>));
-            myList2 = (List<int>)CustomTypeBase.CreateInstanceOfType(typeof(List<int>));
-            webClient = (System.Net.WebClient)CustomTypeBase.CreateInstanceOfType(typeof(System.Net.WebClient));
+            //myList = (List<string>)CustomTypeBase(typeof(List<string>));
+            //myList2 = (List<int>)CustomTypeBase.CreateInstanceOfType(typeof(List<int>));
+            //webClient = (System.Net.WebClient)CustomTypeBase.CreateInstanceOfType(typeof(System.Net.WebClient));
 
         }
 

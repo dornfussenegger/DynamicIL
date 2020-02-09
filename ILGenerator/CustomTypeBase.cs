@@ -20,10 +20,10 @@ namespace ILGenerator
 
 
 
-        public static object CreateInstanceOfType(Type type)
-        {
-            return Activator.CreateInstance(type);
-        }
+        //public static object CreateInstanceOfType(Type type)
+        //{
+        //    return Activator.CreateInstance(type);
+        //}
 
         public virtual void AddIPropertyDescriptorImplementation()
         {
