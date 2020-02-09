@@ -9,6 +9,107 @@ namespace ILGenerator.Test.NetCoreTests
     {
 
         [TestMethod]
+        public void GetPropertyNamesAndTypes()
+        {
+            CustomTypeCreator ct = new CustomTypeCreator("testassembly");
+            var cPerson = ct.CreateNewNotifyPropertyChangedType("Person", true);
+            cPerson.AddProperty("FirstName", typeof(string));
+            cPerson.AddProperty("LastName", typeof(string));
+            cPerson.AddProperty("Uid", typeof(Guid));
+            cPerson.AddIPropertyDescriptorImplementation();
+
+            var types = ct.Build();
+            var tPerson = types.FirstOrDefault(w => w.Name == "Person");
+            var instance = tPerson.CreateInstance<Interfaces.IPropertyDescriptor>();
+
+
+            Assert.IsTrue(instance.GetAllPropertyNames().Length == 3);
+            Assert.IsTrue(instance.GetAllPropertyNames()[0] == "FirstName");
+
+            Assert.IsTrue(instance.GetAllPropertyTypes().Length == 3);
+            Assert.IsTrue(instance.GetAllPropertyTypes()[0] == typeof(string));
+
+        }
+
+
+        [TestMethod]
+        public void NotifyPropertyChangedTestObjectWithChangeTracker()
+        {
+            CustomTypeCreator ct = new CustomTypeCreator("testassembly");
+            var cPerson = ct.CreateNewNotifyPropertyChangedType("Person", true);
+            cPerson.AddProperty("FirstName", typeof(string));
+            cPerson.AddProperty("LastName", typeof(string));
+            cPerson.AddProperty("Uid", typeof(Guid));
+
+            var types = ct.Build();
+            var tPerson = types.FirstOrDefault(w => w.Name == "Person");
+
+            var iPerson = tPerson.CreateInstanceWithPropertyGetAndSet() as BaseClasses.NotifyPropertyChangedBaseWithChangeTracker;
+            var hadChanges = false;
+            iPerson.PropertyChanged += (s, a) => {
+                hadChanges = true;
+            };
+
+            Assert.IsFalse(iPerson.ChangeTracker.Changes.Any());
+
+            Guid guid = Guid.NewGuid();
+
+
+            iPerson.SetPropertyValue("FirstName", "Lukas");
+            iPerson.SetPropertyValue("LastName", "Dorn-Fussenegger");
+            iPerson.SetPropertyValue("Uid", guid);
+
+            Assert.IsTrue(iPerson.ChangeTracker.Changes.Count() == 3);
+            Assert.IsTrue(iPerson.ChangeTracker.HasChangedProperty("FirstName"));
+            Assert.IsTrue(iPerson.ChangeTracker.HasChangedProperty("LastName"));
+            Assert.IsTrue(iPerson.ChangeTracker.HasChangedProperty("Uid"));
+
+
+
+            Assert.IsTrue(iPerson.GetPropertyValue<string>("FirstName") == "Lukas");
+            Assert.IsTrue(iPerson.GetPropertyValue<string>("LastName") == "Dorn-Fussenegger");
+            Assert.IsTrue(iPerson.GetPropertyValue<Guid>("Uid") == guid);
+
+            iPerson.ChangeTracker.ResetChanges();
+            Assert.IsTrue(iPerson.ChangeTracker.Changes.Count() == 0);
+
+            Assert.IsTrue(hadChanges);
+        }
+
+        [TestMethod]
+        public void NotifyPropertyChangedTestObject()
+        {
+            CustomTypeCreator ct = new CustomTypeCreator("testassembly");
+            var cPerson = ct.CreateNewNotifyPropertyChangedType("Person");
+            cPerson.AddProperty("FirstName", typeof(string));
+            cPerson.AddProperty("LastName", typeof(string));
+            cPerson.AddProperty("Uid", typeof(Guid));
+
+            var types = ct.Build();
+            var tPerson = types.FirstOrDefault(w => w.Name == "Person");
+
+            var iPerson = tPerson.CreateInstanceWithPropertyGetAndSet() as BaseClasses.NotifyPropertyChangedBase;
+            var hadChanges = false;
+            iPerson.PropertyChanged += (s, a) => {
+                hadChanges = true;
+            };
+
+            Guid guid = Guid.NewGuid();
+
+
+            iPerson.SetPropertyValue("FirstName", "Lukas");
+            iPerson.SetPropertyValue("LastName", "Dorn-Fussenegger");
+            iPerson.SetPropertyValue("Uid", guid);
+
+
+            Assert.IsTrue(iPerson.GetPropertyValue<string>("FirstName") == "Lukas");
+            Assert.IsTrue(iPerson.GetPropertyValue<string>("LastName") == "Dorn-Fussenegger");
+            Assert.IsTrue(iPerson.GetPropertyValue<Guid>("Uid") == guid);
+
+            Assert.IsTrue(hadChanges);
+        }
+
+        [TestMethod]
         public void SimpleObject()
         {
             CustomTypeCreator ct = new CustomTypeCreator("testassembly");

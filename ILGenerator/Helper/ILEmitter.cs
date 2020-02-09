@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,6 +10,9 @@ namespace ILGenerator.Helper
 
     public class ILEmitter
     {
+
+
+
         private readonly System.Reflection.Emit.ILGenerator _il;
         public ILEmitter(Type callerType, object buildingType, System.Reflection.Emit.ILGenerator il,
                          [System.Runtime.CompilerServices.CallerMemberName] string callerMethod = "")
@@ -37,6 +41,49 @@ namespace ILGenerator.Helper
             CallerType = callerType;
             
             
+        }
+
+        public void EmitGetStringArrayMethodIL(System.Reflection.Emit.ILGenerator emit, string[] array)
+        {
+            var e = emit;
+            e.DeclareLocal(typeof(string[]));
+            e.Emit(OpCodes.Ldc_I4, array.Length);
+            e.Emit(OpCodes.Newarr, typeof(string));
+
+            var i = 0;
+            foreach (var p in array)
+            {
+                e.Emit(OpCodes.Dup);
+                e.Emit(OpCodes.Ldc_I4, i);
+                e.Emit(OpCodes.Ldstr, p);
+                e.Emit(OpCodes.Stelem_Ref);
+                i += 1;
+            }
+            e.Emit(OpCodes.Ret);
+        }
+
+        public void EmitGetTypeArrayMethodIL(System.Reflection.Emit.ILGenerator emit, Type[] array)
+        {
+            var e = emit;
+            e.DeclareLocal(typeof(Type[]));
+            e.Emit(OpCodes.Ldc_I4, array.Length);
+            e.Emit(OpCodes.Newarr, typeof(Type));
+
+            var mGetTypeFromHandle = typeof(Type).GetMethod("GetTypeFromHandle",
+                new[] { typeof(RuntimeTypeHandle) });
+
+            var i = 0;
+            foreach (var p in array)
+            {
+                e.Emit(OpCodes.Dup);
+                e.Emit(OpCodes.Ldc_I4, i);
+                e.Emit(OpCodes.Ldtoken, p);
+                e.Emit(OpCodes.Call, mGetTypeFromHandle);
+                e.Emit(OpCodes.Stelem_Ref);
+
+                i += 1;
+            }
+            e.Emit(OpCodes.Ret);
         }
 
         public string CallerMethod { get; private set; }

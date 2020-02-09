@@ -12,12 +12,6 @@ namespace ILGenerator
 
 			this.FieldInfo = field;
 
-			PropertyBuilder propertyBuilder = ct.TypeBuilder.DefineProperty(
-				name,
-				System.Reflection.PropertyAttributes.HasDefault,
-				type,
-				null);
-
 			MethodAttributes getSetAttr = MethodAttributes.Public |
 					   MethodAttributes.SpecialName | MethodAttributes.HideBySig;
 
@@ -31,6 +25,7 @@ namespace ILGenerator
 			this.PropertyGetter = propertyGetAccessor;
 
 			var fieldGetIL = propertyGetAccessor.GetILGenerator();
+			var fieldGetIL_loc1 = fieldGetIL.DeclareLocal(type);
 			fieldGetIL.Emit(OpCodes.Ldarg_0);
 			fieldGetIL.Emit(OpCodes.Ldfld, field);
 			fieldGetIL.Emit(OpCodes.Ret);
@@ -49,8 +44,8 @@ namespace ILGenerator
 			fieldSetIL.Emit(OpCodes.Stfld, field);
 			fieldSetIL.Emit(OpCodes.Ret);
 
-			propertyBuilder.SetGetMethod(propertyGetAccessor);
-			propertyBuilder.SetSetMethod(propertySetAccessor);
+			PropertyBuilder.SetGetMethod(propertyGetAccessor);
+			PropertyBuilder.SetSetMethod(propertySetAccessor);
 		}
 	}
 }

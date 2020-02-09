@@ -38,9 +38,20 @@ namespace ILGenerator
 			return t;
 		}
 
+		public BaseClasses.NotifyPropertyChangedBaseCreator.NotifyPropertyChangedType CreateNewNotifyPropertyChangedType(string name, bool withChangeTracker = false)
+		{
+			var t = new BaseClasses.NotifyPropertyChangedBaseCreator.NotifyPropertyChangedType(this.BuildContext, name, withChangeTracker);
+			this.CustomTypes.Add(t);
+			return t;
+		}
+
 
 		public Type[] Build()
 		{
+			foreach (var item in this.CustomTypes)
+			{
+				item.OnBeforeBuild();
+			}
 			foreach (var element in BuildContext.TypesToCompile)
 			{
 				var t = element.CreateType();

@@ -10,6 +10,8 @@ namespace ILGenerator.Interfaces
     {
         void SetPropertyValue(string propertyName, object value);
         object GetPropertyValue(string propertyName);
-
     }
+
+    
+    
 }
