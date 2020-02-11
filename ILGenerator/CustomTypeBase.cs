@@ -17,14 +17,6 @@ namespace ILGenerator
                 AddIInitializeableImplementation();
             }
         }
-
-
-
-        //public static object CreateInstanceOfType(Type type)
-        //{
-        //    return Activator.CreateInstance(type);
-        //}
-
         public virtual void AddIPropertyDescriptorImplementation()
         {
             if (this.ImplementInterface(typeof(Interfaces.IPropertyDescriptor)) == false)

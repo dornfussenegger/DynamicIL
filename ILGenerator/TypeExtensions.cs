@@ -30,12 +30,12 @@ namespace ILGenerator
             }
             return i;
         }
-        public static BaseClasses.IGenericAddNewList CreateInstanceOfList(this Type t)
+        public static Interfaces.IGenericAddNewList CreateInstanceOfList(this Type t)
         {
             var tg = typeof(BaseClasses.GenericAddNewList<>);
             var gl = tg.MakeGenericType(new Type[] { t });
             var o = Activator.CreateInstance(gl);
-            return (BaseClasses.IGenericAddNewList)o;
+            return (Interfaces.IGenericAddNewList)o;
         }
 
         public static Interfaces.IPropertyGetAndSet CreateInstanceWithPropertyGetAndSet(this Type t)

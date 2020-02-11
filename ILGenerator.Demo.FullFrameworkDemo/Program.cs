@@ -55,7 +55,7 @@ namespace ILGenerator.Demo.FullFrameworkDemo
             { 
                 var t = b.Compile("test").FirstOrDefault(w => w.Name == "Test");
                 var i = t.CreateInstance() as Interfaces.IPropertyGetAndSet;
-                var linkCollection = i.GetPropertyValue<BaseClasses.IGenericAddNewList>("Links");
+                var linkCollection = i.GetPropertyValue<Interfaces.IGenericAddNewList>("Links");
 
                 int x = 0;
                 foreach (var item in linkCollection.CreateAndAdd(3))
@@ -86,7 +86,7 @@ namespace ILGenerator.Demo.FullFrameworkDemo
                 var b2 = deserialized;
                 var t = b2.Compile("test").FirstOrDefault(w => w.Name == "Test");
                 var i = t.CreateInstance() as Interfaces.IPropertyGetAndSet;
-                var linkCollection = i.GetPropertyValue<BaseClasses.IGenericAddNewList>("Links");
+                var linkCollection = i.GetPropertyValue<Interfaces.IGenericAddNewList>("Links");
 
                 int x = 0;
                 foreach (var item in linkCollection.CreateAndAdd(3))

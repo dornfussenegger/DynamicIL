@@ -25,7 +25,7 @@ namespace ILGenerator
 			this.PropertyGetter = propertyGetAccessor;
 
 			var fieldGetIL = propertyGetAccessor.GetILGenerator();
-			var fieldGetIL_loc1 = fieldGetIL.DeclareLocal(type);
+			fieldGetIL.DeclareLocal(type);
 			fieldGetIL.Emit(OpCodes.Ldarg_0);
 			fieldGetIL.Emit(OpCodes.Ldfld, field);
 			fieldGetIL.Emit(OpCodes.Ret);

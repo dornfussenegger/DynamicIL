@@ -8,7 +8,6 @@ namespace ILGenerator.BaseClasses
         public object OldValue { get; set; }
         public object NewValue { get; set; }
         public DateTime Timestamp { get; set; }
-
         public Change(string propertyName, object oldValue, object newValue)
         {
             this.PropertyName = propertyName;

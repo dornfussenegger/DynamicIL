@@ -53,9 +53,9 @@ namespace ILGenerator.ClassDefinition
             {
                 foreach (var p in t.DefinitionType.Properties)
                 {
-                    t.CompileType.AddProperty(p.Name, LocateType(p.Type, l)).SetCustomPropertyFlags(CustomPropertyFlags.InitializeInInitializeMethod, p.AutoInitialize == true);
+                    t.CompileType.AddProperty(p.Name, LocateType(p.Type, l))
+                        .SetCustomPropertyFlags(CustomPropertyFlags.InitializeInInitializeMethod, true);
                 }
-
                 t.CompileType.AddPropertyGetAndSet();
             }
 
@@ -95,55 +95,6 @@ namespace ILGenerator.ClassDefinition
                 throw new Exception("Can not find identifer: " + identifier);
             }
         }
-    }
-
-    public enum DefinitionTypeEnums
-    {
-        SimpleType,
-        NotifyPropertyChanged,
-        NotifyPropertyChangedWithChangeTracker
-    }
-
-    public class DefinitionType
-    {
-        public DefinitionTypeEnums Type { get; set; }
-        public string Name { get; set; }
-        public List<Property> Properties { get; set; } = new List<Property>();
-
-
-
-        public void AddProperty(string name, Type type)
-        {
-            Properties.Add(new Property() { Name = name, Type = "SystemType::" + type.FullName });
-        }
-        public void AddProperty(string name, DefinitionType type)
-        {
-            Properties.Add(new Property() { Name = name, Type = "DefinitionType::" + type.Name, AutoInitialize=true });
-        }
-        public void AddPropertyOfList(string name, Type type)
-        {
-            Properties.Add(new Property() { Name = name, Type = "CollectionOfSystemType::" + type.FullName, AutoInitialize=true });
-        }
-        public void AddPropertyOfList(string name, DefinitionType type)
-        {
-            Properties.Add(new Property() { Name = name, Type = "CollectionOfDefinitionType::" + type.Name, AutoInitialize=true });
-        }
-    }
-
-    public class Property
-    {
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public bool AutoInitialize { get; set; }
-
-    }
-
-    public enum PropertyType
-    {
-        SystemType,
-        DefinitionType,
-        CollectionOfSystemType,
-        CollectionOfDefinitionType        
     }
 
 }

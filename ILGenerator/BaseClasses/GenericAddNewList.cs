@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ILGenerator.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -55,19 +56,5 @@ namespace ILGenerator.BaseClasses
             }
             return results.ToArray();
         }
-    }
-
-    public interface IGenericAddNewList : System.Collections.IList
-    {
-        object CreateAndAdd();
-        object Create();
-        object[] CreateAndAdd(int count);
-    }
-
-    public interface IGenericAddNewGenericList<T> : System.Collections.Generic.IList<T>
-    {
-        T CreateAndAdd();
-        T Create();
-        T[] CreateAndAdd(int count);
     }
 }

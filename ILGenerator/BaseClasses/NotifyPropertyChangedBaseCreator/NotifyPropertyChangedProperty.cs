@@ -12,8 +12,6 @@ namespace ILGenerator.BaseClasses.NotifyPropertyChangedBaseCreator
 		public NotifyPropertyChangedProperty(CustomTypeBase ct, string name, Type type) : base(ct, name, type)
 		{
 
-			var inType = (NotifyPropertyChangedType)ct;
-
 			var field = ct.TypeBuilder.DefineField(this.FieldName, type, FieldAttributes.Private);
 
 			this.FieldInfo = field;
@@ -151,19 +149,8 @@ namespace ILGenerator.BaseClasses.NotifyPropertyChangedBaseCreator
 
 			fieldSetIL.Emit(OpCodes.Callvirt, methodOnPropertyChanged);
 
-			//// //  (no C# code)
-			//// IL_003c: nop
-			//fieldSetIL.Emit(OpCodes.Nop);
-
-
-
-			//// IL_003d: nop
-			//fieldSetIL.Emit(OpCodes.Nop);
-
-
 			fieldSetIL.MarkLabel(IL_003e);
-			fieldSetIL.Emit(OpCodes.Ret);
-			
+			fieldSetIL.Emit(OpCodes.Ret);		
 
 			PropertyBuilder.SetGetMethod(propertyGetAccessor);
 			PropertyBuilder.SetSetMethod(propertySetAccessor);
