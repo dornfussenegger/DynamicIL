@@ -234,7 +234,7 @@ namespace ILGenerator.Helper
             return this;
         }
 
-        public ILEmitter bne_un(System.Reflection.Emit.Label target)
+        public ILEmitter Bne_un(System.Reflection.Emit.Label target)
         {
             _il.Emit(System.Reflection.Emit.OpCodes.Bne_Un, target);
             return this;
@@ -246,19 +246,19 @@ namespace ILGenerator.Helper
             return this;
         }
 
-        public ILEmitter ldc_i4_0()
+        public ILEmitter Ldc_i4_0()
         {
             _il.Emit(System.Reflection.Emit.OpCodes.Ldc_I4_0);
             return this;
         }
 
-        public ILEmitter ldc_i4_1()
+        public ILEmitter Ldc_i4_1()
         {
             _il.Emit(System.Reflection.Emit.OpCodes.Ldc_I4_1);
             return this;
         }
 
-        public ILEmitter ldc_i4(int c)
+        public ILEmitter Ldc_i4(int c)
         {
             _il.Emit(System.Reflection.Emit.OpCodes.Ldc_I4, c);
             return this;
@@ -288,7 +288,7 @@ namespace ILGenerator.Helper
             return this;
         }
 
-        public ILEmitter ldarga_s(int idx)
+        public ILEmitter Ldarga_s(int idx)
         {
             _il.Emit(System.Reflection.Emit.OpCodes.Ldarga_S, idx);
             return this;
@@ -300,13 +300,13 @@ namespace ILGenerator.Helper
             return this;
         }
 
-        public ILEmitter ldarg_s(int idx)
+        public ILEmitter Ldarg_s(int idx)
         {
             _il.Emit(System.Reflection.Emit.OpCodes.Ldarg_S, idx);
             return this;
         }
 
-        public ILEmitter ifclass_ldind_ref(Type type)
+        public ILEmitter Ifclass_ldind_ref(Type type)
         {
             if (!type.IsValueType)
             {
@@ -333,25 +333,25 @@ namespace ILGenerator.Helper
             return this;
         }
 
-        public ILEmitter ldloca_s(int idx)
+        public ILEmitter Ldloca_s(int idx)
         {
             _il.Emit(System.Reflection.Emit.OpCodes.Ldloca_S, idx);
             return this;
         }
 
-        public ILEmitter ldloca_s(System.Reflection.Emit.LocalBuilder local)
+        public ILEmitter Ldloca_s(System.Reflection.Emit.LocalBuilder local)
         {
             _il.Emit(System.Reflection.Emit.OpCodes.Ldloca_S, local);
             return this;
         }
 
-        public ILEmitter ldloc_s(int idx)
+        public ILEmitter Ldloc_s(int idx)
         {
             _il.Emit(System.Reflection.Emit.OpCodes.Ldloc_S, idx);
             return this;
         }
 
-        public ILEmitter ldloc_s(System.Reflection.Emit.LocalBuilder local)
+        public ILEmitter Ldloc_s(System.Reflection.Emit.LocalBuilder local)
         {
             _il.Emit(System.Reflection.Emit.OpCodes.Ldloc_S, local);
             return this;
