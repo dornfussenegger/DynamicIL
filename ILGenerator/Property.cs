@@ -5,7 +5,7 @@ using System.Reflection.Emit;
 
 namespace ILGenerator
 {
-    public abstract class Property
+	public abstract class Property
 	{
 
 		public PropertyBuilder PropertyBuilder { get; internal set; }
@@ -70,10 +70,5 @@ namespace ILGenerator
 			}
 		}
 
-	}
-
-	public enum CustomPropertyFlags
-	{
-		InitializeInInitializeMethod
 	}
 }
