@@ -13,7 +13,7 @@ namespace ILGenerator.ClassDefinition
 
         public void AddProperty(string name, Type type)
         {
-            Properties.Add(new Property() { Name = name, Type = "SystemType::" + type.FullName });
+            Properties.Add(new Property() { Name = name, Type = "SystemType::" + type.FullName, AutoInitialize=false });
         }
         public void AddProperty(string name, DefinitionType type)
         {

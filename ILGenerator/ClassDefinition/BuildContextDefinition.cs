@@ -53,8 +53,7 @@ namespace ILGenerator.ClassDefinition
             {
                 foreach (var p in t.DefinitionType.Properties)
                 {
-                    t.CompileType.AddProperty(p.Name, LocateType(p.Type, l))
-                        .SetCustomPropertyFlags(CustomPropertyFlags.InitializeInInitializeMethod, true);
+                    t.CompileType.AddProperty(p.Name, LocateType(p.Type, l));
                 }
                 t.CompileType.AddPropertyGetAndSet();
             }

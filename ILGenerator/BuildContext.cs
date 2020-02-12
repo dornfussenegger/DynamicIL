@@ -29,19 +29,22 @@ namespace ILGenerator
 
 #if NETFRAMEWORK
             AssemblyName = new AssemblyName(assemblyName);
-            AssemblyBuilder =
-                AppDomain.CurrentDomain.DefineDynamicAssembly(
-                    AssemblyName,
-                    AssemblyBuilderAccess.RunAndSave);
-            if (outputDllPath != null)
+            if (!string.IsNullOrWhiteSpace(outputDllPath))
             {
+                AssemblyBuilder =
+                    AppDomain.CurrentDomain.DefineDynamicAssembly(
+                        AssemblyName,
+                        AssemblyBuilderAccess.RunAndSave);
                 ModuleBuilder = AssemblyBuilder.DefineDynamicModule(assemblyName, outputDllPath);
             }
             else
             {
+                AssemblyBuilder =
+                    AppDomain.CurrentDomain.DefineDynamicAssembly(
+                        AssemblyName,
+                        AssemblyBuilderAccess.Run);
                 ModuleBuilder = AssemblyBuilder.DefineDynamicModule(assemblyName, assemblyName + ".dll");
             }
-
 #else
             var name = new AssemblyName(assemblyName);
             AssemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(name, AssemblyBuilderAccess.Run);

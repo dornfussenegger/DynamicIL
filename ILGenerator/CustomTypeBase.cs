@@ -77,7 +77,7 @@ namespace ILGenerator
 
             il.Emit(OpCodes.Nop);
 
-            foreach (var property in this.Properties.Where(w => w.CustomPropertyFlags.ContainsKey(CustomPropertyFlags.InitializeInInitializeMethod) && w.CustomPropertyFlags[CustomPropertyFlags.InitializeInInitializeMethod] == true && !w.Type.IsValueType))
+            foreach (var property in this.Properties.Where(w => w.GetCustomPropertyFlag(CustomPropertyFlags.InitializeInInitializeMethod) /*&& !w.Type.IsValueType && !(w.Type == typeof(string))*/  ))
             {
                 //IL_0001: ldarg.0
                 il.Emit(OpCodes.Ldarg_0);
@@ -90,7 +90,7 @@ namespace ILGenerator
                 il.Emit(OpCodes.Call, method1);
 
                 //IL_000c: call object [ILGenerator]ILGenerator.CustomTypeBase::CreateInstanceOfType(class [mscorlib]System.Type)
-                var method2 = typeof(ILGenerator.CustomTypeBase).GetMethod("CreateInstanceOfType");
+                var method2 = typeof(CustomTypeBase).GetMethod("CreateInstanceOfType");
                 il.Emit(OpCodes.Call, method2);
 
                 //IL_0011: castclass class [mscorlib]System.Collections.Generic.List`1<string>
@@ -102,6 +102,11 @@ namespace ILGenerator
             il.Emit(OpCodes.Ret);
 
             TypeBuilder.DefineMethodOverride(method, overrideMethod);
+        }
+
+        public static object CreateInstanceOfType(Type type)
+        {
+            return Activator.CreateInstance(type);
         }
 
         public void AddAttribute(Type attributeType, params object[] attributeParameters)

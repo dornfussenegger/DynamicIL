@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILGenerator.Test.NetCoreTes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILGenerator.Extraction", "ILGenerator.Extraction\ILGenerator.Extraction.csproj", "{B6711F28-D3F3-4A4A-8527-21B58F7FE318}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILGenerator.Benchmark", "ILGenerator.Benchmark\ILGenerator.Benchmark.csproj", "{65F8A20A-B4A7-4A7B-B155-F12E88CD087A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{B6711F28-D3F3-4A4A-8527-21B58F7FE318}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6711F28-D3F3-4A4A-8527-21B58F7FE318}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6711F28-D3F3-4A4A-8527-21B58F7FE318}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65F8A20A-B4A7-4A7B-B155-F12E88CD087A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65F8A20A-B4A7-4A7B-B155-F12E88CD087A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65F8A20A-B4A7-4A7B-B155-F12E88CD087A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65F8A20A-B4A7-4A7B-B155-F12E88CD087A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
