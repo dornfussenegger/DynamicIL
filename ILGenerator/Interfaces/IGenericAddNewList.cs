@@ -1,6 +1,7 @@
-﻿namespace ILGenerator.Interfaces
+﻿using System.Collections;
+namespace ILGenerator.Interfaces
 {
-    public interface IGenericAddNewList : System.Collections.IList
+    public interface IGenericAddNewList : IList
     {
         object CreateAndAdd();
         object Create();

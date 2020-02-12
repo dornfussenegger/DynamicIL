@@ -9,16 +9,14 @@ namespace ILGenerator.BaseClasses
         public bool Enabled { get; set; } = true;
 
         public object Object { get; set; }
-        public void ResetChanges() {
+        public void ResetChanges()
+        {
             this.changes.Clear();
         }
 
-        private System.Collections.Generic.List<Change> changes = new List<Change>();
+        private readonly List<Change> changes = new List<Change>();
 
-        public System.Collections.Generic.IReadOnlyCollection<Change> Changes
-        {
-            get { return changes; }
-        }
+        public IReadOnlyCollection<Change> Changes => changes;
 
         public void Changed(string propertyName, object oldValue, object newValue)
         {

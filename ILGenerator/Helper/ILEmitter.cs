@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ILGenerator.Helper
 {
 
     public class ILEmitter
     {
-
-
 
         private readonly System.Reflection.Emit.ILGenerator _il;
         public ILEmitter(Type callerType, object buildingType, System.Reflection.Emit.ILGenerator il,
@@ -39,8 +34,8 @@ namespace ILGenerator.Helper
 
             BuildingType = buildingType;
             CallerType = callerType;
-            
-            
+
+
         }
 
         public void EmitGetStringArrayMethodIL(System.Reflection.Emit.ILGenerator emit, string[] array)
@@ -94,19 +89,21 @@ namespace ILGenerator.Helper
 
         public System.Reflection.Emit.ILGenerator Emitter { get; private set; }
 
+        public System.Reflection.Emit.ILGenerator Il => _il;
+
         public void DeclareLocal(Type type)
         {
-            _il.DeclareLocal(type);
+            Il.DeclareLocal(type);
         }
 
         public void DeclareLocal<T>()
         {
-            _il.DeclareLocal(typeof(T));
+            Il.DeclareLocal(typeof(T));
         }
 
         public ILEmitter Ret()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ret);
+            Il.Emit(OpCodes.Ret);
             return this;
         }
 
@@ -116,7 +113,7 @@ namespace ILGenerator.Helper
             {
                 throw new ArgumentNullException(nameof(type));
             }
-            _il.Emit(System.Reflection.Emit.OpCodes.Castclass, type);
+            Il.Emit(OpCodes.Castclass, type);
             return this;
         }
 
@@ -124,11 +121,11 @@ namespace ILGenerator.Helper
         {
             if (type.IsValueType)
             {
-                _il.Emit(System.Reflection.Emit.OpCodes.Unbox_Any, type);
+                Il.Emit(OpCodes.Unbox_Any, type);
             }
             else
             {
-                _il.Emit(System.Reflection.Emit.OpCodes.Castclass, type);
+                Il.Emit(OpCodes.Castclass, type);
             }
 
             return this;
@@ -140,7 +137,7 @@ namespace ILGenerator.Helper
             {
                 throw new ArgumentNullException(nameof(type));
             }
-            _il.Emit(System.Reflection.Emit.OpCodes.Box, type);
+            Il.Emit(OpCodes.Box, type);
             return this;
         }
 
@@ -150,7 +147,7 @@ namespace ILGenerator.Helper
             {
                 throw new ArgumentNullException(nameof(type));
             }
-            _il.Emit(System.Reflection.Emit.OpCodes.Unbox_Any, type);
+            Il.Emit(OpCodes.Unbox_Any, type);
             return this;
         }
 
@@ -160,7 +157,7 @@ namespace ILGenerator.Helper
             {
                 throw new ArgumentNullException(nameof(type));
             }
-            _il.Emit(System.Reflection.Emit.OpCodes.Unbox, type);
+            Il.Emit(OpCodes.Unbox, type);
             return this;
         }
 
@@ -170,7 +167,7 @@ namespace ILGenerator.Helper
             {
                 throw new ArgumentNullException(nameof(method));
             }
-            _il.Emit(System.Reflection.Emit.OpCodes.Call, method);
+            Il.Emit(OpCodes.Call, method);
             return this;
         }
 
@@ -180,7 +177,7 @@ namespace ILGenerator.Helper
             {
                 throw new ArgumentNullException(nameof(method));
             }
-            _il.Emit(System.Reflection.Emit.OpCodes.Callvirt, method);
+            Il.Emit(OpCodes.Callvirt, method);
             return this;
         }
 
@@ -191,7 +188,7 @@ namespace ILGenerator.Helper
             {
                 throw new Exception($"Can not find Method {methodName} on Type {type.FullName}");
             }
-            _il.Emit(System.Reflection.Emit.OpCodes.Call, type.GetMethod(methodName));
+            Il.Emit(OpCodes.Call, type.GetMethod(methodName));
             return this;
         }
 
@@ -202,7 +199,7 @@ namespace ILGenerator.Helper
             {
                 throw new Exception($"Can not find Method {methodName} on Type {type.FullName} with Parameters {string.Join(", ", parameterTypes.Select(s => s.FullName))}");
             }
-            _il.Emit(System.Reflection.Emit.OpCodes.Call, type.GetMethod(methodName, parameterTypes));
+            Il.Emit(OpCodes.Call, type.GetMethod(methodName, parameterTypes));
             return this;
         }
 
@@ -213,7 +210,7 @@ namespace ILGenerator.Helper
             {
                 throw new Exception($"Can not find Method {methodName} on Type {type.FullName} with Parameters {string.Join(", ", parameterTypes.Select(s => s.FullName))}");
             }
-            _il.Emit(System.Reflection.Emit.OpCodes.Callvirt, type.GetMethod(methodName, parameterTypes));
+            Il.Emit(OpCodes.Callvirt, type.GetMethod(methodName, parameterTypes));
             return this;
         }
 
@@ -224,85 +221,85 @@ namespace ILGenerator.Helper
             {
                 throw new Exception($"Can not find Method {methodName} on Type {type.FullName}");
             }
-            _il.Emit(System.Reflection.Emit.OpCodes.Callvirt, type.GetMethod(methodName));
+            Il.Emit(OpCodes.Callvirt, type.GetMethod(methodName));
             return this;
         }
 
         public ILEmitter Ldnull()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldnull);
+            Il.Emit(OpCodes.Ldnull);
             return this;
         }
 
-        public ILEmitter Bne_un(System.Reflection.Emit.Label target)
+        public ILEmitter Bne_un(Label target)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Bne_Un, target);
+            Il.Emit(OpCodes.Bne_Un, target);
             return this;
         }
 
-        public ILEmitter Beq(System.Reflection.Emit.Label target)
+        public ILEmitter Beq(Label target)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Beq, target);
+            Il.Emit(OpCodes.Beq, target);
             return this;
         }
 
         public ILEmitter Ldc_i4_0()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldc_I4_0);
+            Il.Emit(OpCodes.Ldc_I4_0);
             return this;
         }
 
         public ILEmitter Ldc_i4_1()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldc_I4_1);
+            Il.Emit(OpCodes.Ldc_I4_1);
             return this;
         }
 
         public ILEmitter Ldc_i4(int c)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldc_I4, c);
+            Il.Emit(OpCodes.Ldc_I4, c);
             return this;
         }
 
         public ILEmitter Ldarg0()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldarg_0);
+            Il.Emit(OpCodes.Ldarg_0);
             return this;
         }
 
         public ILEmitter Ldarg1()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldarg_1);
+            Il.Emit(OpCodes.Ldarg_1);
             return this;
         }
 
         public ILEmitter Ldarg2()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldarg_2);
+            Il.Emit(OpCodes.Ldarg_2);
             return this;
         }
 
         public ILEmitter Ldarga(int idx)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldarga, idx);
+            Il.Emit(OpCodes.Ldarga, idx);
             return this;
         }
 
         public ILEmitter Ldarga_s(int idx)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldarga_S, idx);
+            Il.Emit(OpCodes.Ldarga_S, idx);
             return this;
         }
 
         public ILEmitter Ldarg(int idx)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldarg, idx);
+            Il.Emit(OpCodes.Ldarg, idx);
             return this;
         }
 
         public ILEmitter Ldarg_s(int idx)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldarg_S, idx);
+            Il.Emit(OpCodes.Ldarg_S, idx);
             return this;
         }
 
@@ -310,99 +307,99 @@ namespace ILGenerator.Helper
         {
             if (!type.IsValueType)
             {
-                _il.Emit(System.Reflection.Emit.OpCodes.Ldind_Ref);
+                Il.Emit(OpCodes.Ldind_Ref);
             }
             return this;
         }
 
         public ILEmitter Ldloc0()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldloc_0);
+            Il.Emit(OpCodes.Ldloc_0);
             return this;
         }
 
         public ILEmitter Ldloc1()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldloc_1);
+            Il.Emit(OpCodes.Ldloc_1);
             return this;
         }
 
         public ILEmitter Ldloc2()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldloc_2);
+            Il.Emit(OpCodes.Ldloc_2);
             return this;
         }
 
         public ILEmitter Ldloca_s(int idx)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldloca_S, idx);
+            Il.Emit(OpCodes.Ldloca_S, idx);
             return this;
         }
 
-        public ILEmitter Ldloca_s(System.Reflection.Emit.LocalBuilder local)
+        public ILEmitter Ldloca_s(LocalBuilder local)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldloca_S, local);
+            Il.Emit(OpCodes.Ldloca_S, local);
             return this;
         }
 
         public ILEmitter Ldloc_s(int idx)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldloc_S, idx);
+            Il.Emit(OpCodes.Ldloc_S, idx);
             return this;
         }
 
-        public ILEmitter Ldloc_s(System.Reflection.Emit.LocalBuilder local)
+        public ILEmitter Ldloc_s(LocalBuilder local)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldloc_S, local);
+            Il.Emit(OpCodes.Ldloc_S, local);
             return this;
         }
 
         public ILEmitter Ldloca(int idx)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldloca, idx);
+            Il.Emit(OpCodes.Ldloca, idx);
             return this;
         }
 
-        public ILEmitter Ldloca(System.Reflection.Emit.LocalBuilder local)
+        public ILEmitter Ldloca(LocalBuilder local)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldloca, local);
+            Il.Emit(OpCodes.Ldloca, local);
             return this;
         }
 
         public ILEmitter Ldloc(int idx)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldloc, idx);
+            Il.Emit(OpCodes.Ldloc, idx);
             return this;
         }
 
-        public ILEmitter Ldloc(System.Reflection.Emit.LocalBuilder local)
+        public ILEmitter Ldloc(LocalBuilder local)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldloc, local);
+            Il.Emit(OpCodes.Ldloc, local);
             return this;
         }
 
         public ILEmitter Initobj(Type type)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Initobj, type);
+            Il.Emit(OpCodes.Initobj, type);
             return this;
         }
 
         public ILEmitter Newobj(System.Reflection.ConstructorInfo ctor)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Newobj, ctor);
+            Il.Emit(OpCodes.Newobj, ctor);
             return this;
         }
 
         public ILEmitter Newobj(Type type, params Type[] parameters)
         {
             var ctr = type.GetConstructor(parameters);
-            _il.Emit(System.Reflection.Emit.OpCodes.Newobj, ctr);
+            Il.Emit(OpCodes.Newobj, ctr);
             return this;
         }
 
         public ILEmitter Throw()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Throw);
+            Il.Emit(OpCodes.Throw);
             return this;
         }
 
@@ -415,61 +412,61 @@ namespace ILGenerator.Helper
 
         public ILEmitter Stelem_ref()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Stelem_Ref);
+            Il.Emit(OpCodes.Stelem_Ref);
             return this;
         }
 
         public ILEmitter Ldelem_ref()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldelem_Ref);
+            Il.Emit(OpCodes.Ldelem_Ref);
             return this;
         }
 
         public ILEmitter Ldlen()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldlen);
+            Il.Emit(OpCodes.Ldlen);
             return this;
         }
 
         public ILEmitter Stloc(int idx)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Stloc, idx);
+            Il.Emit(OpCodes.Stloc, idx);
             return this;
         }
 
         public ILEmitter Stloc_s(int idx)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Stloc_S, idx);
+            Il.Emit(OpCodes.Stloc_S, idx);
             return this;
         }
 
-        public ILEmitter Stloc(System.Reflection.Emit.LocalBuilder local)
+        public ILEmitter Stloc(LocalBuilder local)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Stloc, local);
+            Il.Emit(OpCodes.Stloc, local);
             return this;
         }
 
-        public ILEmitter Stloc_s(System.Reflection.Emit.LocalBuilder local)
+        public ILEmitter Stloc_s(LocalBuilder local)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Stloc_S, local);
+            Il.Emit(OpCodes.Stloc_S, local);
             return this;
         }
 
         public ILEmitter Stloc0()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Stloc_0);
+            Il.Emit(OpCodes.Stloc_0);
             return this;
         }
 
         public ILEmitter Stloc1()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Stloc_1);
+            Il.Emit(OpCodes.Stloc_1);
             return this;
         }
 
-        public ILEmitter Mark(System.Reflection.Emit.Label label)
+        public ILEmitter Mark(Label label)
         {
-            _il.MarkLabel(label);
+            Il.MarkLabel(label);
             return this;
         }
 
@@ -479,7 +476,7 @@ namespace ILGenerator.Helper
             {
                 throw new ArgumentNullException(nameof(field));
             }
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldfld, field);
+            Il.Emit(OpCodes.Ldfld, field);
             return this;
         }
 
@@ -489,7 +486,7 @@ namespace ILGenerator.Helper
             {
                 throw new ArgumentNullException(nameof(field));
             }
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldsfld, field);
+            Il.Emit(OpCodes.Ldsfld, field);
             return this;
         }
 
@@ -518,7 +515,7 @@ namespace ILGenerator.Helper
             }
             if (type.IsValueType)
             {
-                _il.Emit(System.Reflection.Emit.OpCodes.Box, type);
+                Il.Emit(OpCodes.Box, type);
             }
             return this;
         }
@@ -529,7 +526,7 @@ namespace ILGenerator.Helper
             {
                 throw new ArgumentNullException(nameof(field));
             }
-            _il.Emit(System.Reflection.Emit.OpCodes.Stfld, field);
+            Il.Emit(OpCodes.Stfld, field);
             return this;
         }
 
@@ -539,7 +536,7 @@ namespace ILGenerator.Helper
             {
                 throw new ArgumentNullException(nameof(field));
             }
-            _il.Emit(System.Reflection.Emit.OpCodes.Stsfld, field);
+            Il.Emit(OpCodes.Stsfld, field);
             return this;
         }
 
@@ -603,49 +600,49 @@ namespace ILGenerator.Helper
             }
             if (method.IsVirtual)
             {
-                _il.Emit(System.Reflection.Emit.OpCodes.Callvirt, method);
+                Il.Emit(OpCodes.Callvirt, method);
             }
             else
             {
-                _il.Emit(System.Reflection.Emit.OpCodes.Call, method);
+                Il.Emit(OpCodes.Call, method);
             }
             return this;
         }
 
         public ILEmitter Stind_ref()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Stind_Ref);
+            Il.Emit(OpCodes.Stind_Ref);
             return this;
         }
 
         public ILEmitter Ldind_ref()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ldind_Ref);
+            Il.Emit(OpCodes.Ldind_Ref);
             return this;
         }
 
-        public System.Reflection.Emit.LocalBuilder Declocal(Type type)
+        public LocalBuilder Declocal(Type type)
         {
             if (type == null)
             {
                 throw new ArgumentNullException(nameof(type));
             }
-            return _il.DeclareLocal(type);
+            return Il.DeclareLocal(type);
         }
 
         public void Nop()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Nop);
+            Il.Emit(OpCodes.Nop);
         }
 
-        public System.Reflection.Emit.LocalBuilder Declocal<T>()
+        public LocalBuilder Declocal<T>()
         {
-            return _il.DeclareLocal(typeof(T));
+            return Il.DeclareLocal(typeof(T));
         }
 
-        public System.Reflection.Emit.Label Deflabel()
+        public Label Deflabel()
         {
-            return _il.DefineLabel();
+            return Il.DefineLabel();
         }
 
         public ILEmitter Ifclass_ldarg_else_ldarga(int idx, Type type)
@@ -696,7 +693,7 @@ namespace ILGenerator.Helper
             return this;
         }
 
-        public ILEmitter Ifbyref_ldloca_else_ldloc(System.Reflection.Emit.LocalBuilder local, Type type)
+        public ILEmitter Ifbyref_ldloca_else_ldloc(LocalBuilder local, Type type)
         {
             if (local == null)
             {
@@ -723,33 +720,33 @@ namespace ILGenerator.Helper
             {
                 throw new ArgumentNullException(nameof(str));
             }
-            Emitter.Emit(System.Reflection.Emit.OpCodes.Ldstr, str);
+            Emitter.Emit(OpCodes.Ldstr, str);
         }
 
-        public void Br(System.Reflection.Emit.Label label)
+        public void Br(Label label)
         {
-            Emitter.Emit(System.Reflection.Emit.OpCodes.Br, label);
+            Emitter.Emit(OpCodes.Br, label);
         }
 
 
-        public void BrFalse(System.Reflection.Emit.Label label)
+        public void BrFalse(Label label)
         {
-            Emitter.Emit(System.Reflection.Emit.OpCodes.Brfalse, label);
+            Emitter.Emit(OpCodes.Brfalse, label);
         }
 
-        public void MarkLabel(System.Reflection.Emit.Label label)
+        public void MarkLabel(Label label)
         {
             Emitter.MarkLabel(label);
         }
 
-        public System.Reflection.Emit.Label DefineLabel()
+        public Label DefineLabel()
         {
             return Emitter.DefineLabel();
         }
 
         public ILEmitter Stloc2()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Stloc_2);
+            Il.Emit(OpCodes.Stloc_2);
             return this;
         }
 
@@ -771,25 +768,25 @@ namespace ILGenerator.Helper
 
         public ILEmitter Dup()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Dup);
+            Il.Emit(OpCodes.Dup);
             return this;
         }
 
-        public ILEmitter BrTrue(System.Reflection.Emit.Label label)
+        public ILEmitter BrTrue(Label label)
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Brtrue, label);
+            Il.Emit(OpCodes.Brtrue, label);
             return this;
         }
 
         public ILEmitter Pop()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Pop);
+            Il.Emit(OpCodes.Pop);
             return this;
         }
 
         public ILEmitter Ceq()
         {
-            _il.Emit(System.Reflection.Emit.OpCodes.Ceq);
+            Il.Emit(OpCodes.Ceq);
             return this;
         }
     }
@@ -804,13 +801,13 @@ namespace ILGenerator.Helper
             }
             this.ILEmitter = ILEmitter;
             ILEmitter.Emitter.DefineLabel();
-            ILEmitter.Emitter.Emit(System.Reflection.Emit.OpCodes.Brfalse, Label);
+            ILEmitter.Emitter.Emit(OpCodes.Brfalse, Label);
             doDuringIf(ILEmitter);
             ILEmitter.Emitter.MarkLabel(Label);
         }
 
         public ILEmitter ILEmitter { get; private set; }
-        public System.Reflection.Emit.Label Label { get; private set; }
+        public Label Label { get; private set; }
     }
 }
 

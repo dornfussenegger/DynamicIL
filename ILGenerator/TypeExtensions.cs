@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ILGenerator.Interfaces;
+using ILGenerator.BaseClasses;
 
 namespace ILGenerator
 {
@@ -16,31 +14,31 @@ namespace ILGenerator
         public static object CreateInstance(this Type t)
         {
             var i = Activator.CreateInstance(t, Array.Empty<object>());
-            if (i is BaseClasses.NotifyPropertyChangedBaseWithChangeTracker)
+            if (i is NotifyPropertyChangedBaseWithChangeTracker)
             {
-                ((BaseClasses.NotifyPropertyChangedBaseWithChangeTracker)i).ChangeTracker.Enabled = false;
+                ((NotifyPropertyChangedBaseWithChangeTracker)i).ChangeTracker.Enabled = false;
             }
-            if (i is Interfaces.IInitializable)
+            if (i is IInitializable)
             {
-                ((Interfaces.IInitializable)i).Initialize();
+                ((IInitializable)i).Initialize();
             }
-            if (i is BaseClasses.NotifyPropertyChangedBaseWithChangeTracker)
+            if (i is NotifyPropertyChangedBaseWithChangeTracker)
             {
-                ((BaseClasses.NotifyPropertyChangedBaseWithChangeTracker)i).ChangeTracker.Enabled = true;
+                ((NotifyPropertyChangedBaseWithChangeTracker)i).ChangeTracker.Enabled = true;
             }
             return i;
         }
-        public static Interfaces.IGenericAddNewList CreateInstanceOfList(this Type t)
+        public static IGenericAddNewList CreateInstanceOfList(this Type t)
         {
-            var tg = typeof(BaseClasses.GenericAddNewList<>);
+            var tg = typeof(GenericAddNewList<>);
             var gl = tg.MakeGenericType(new Type[] { t });
             var o = Activator.CreateInstance(gl);
-            return (Interfaces.IGenericAddNewList)o;
+            return (IGenericAddNewList)o;
         }
 
-        public static Interfaces.IPropertyGetAndSet CreateInstanceWithPropertyGetAndSet(this Type t)
+        public static IPropertyGetAndSet CreateInstanceWithPropertyGetAndSet(this Type t)
         {
-            return (Interfaces.IPropertyGetAndSet)CreateInstance(t);
+            return (IPropertyGetAndSet)CreateInstance(t);
         }
     }
 }

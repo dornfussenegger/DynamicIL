@@ -1,9 +1,9 @@
-﻿using System;
+﻿using ILGenerator.BaseClasses;
+using System;
 using System.Collections.Generic;
-using System.Reflection.Emit;
 using System.Linq;
 using System.Reflection;
-using ILGenerator.BaseClasses;
+using System.Reflection.Emit;
 
 namespace ILGenerator
 {
@@ -24,7 +24,7 @@ namespace ILGenerator
                 return;
             }
 
-            { 
+            {
                 var method = this.TypeBuilder.DefineMethod("GetAllPropertyTypes", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig, typeof(Type[]), new Type[] { });
                 var il = method.GetILGenerator();
 
@@ -184,8 +184,8 @@ namespace ILGenerator
 
         public virtual void AddPropertyGetAndSet()
         {
-            
-            
+
+
             if (ImplementInterface(typeof(Interfaces.IPropertyGetAndSet)) == false)
             {
                 return;

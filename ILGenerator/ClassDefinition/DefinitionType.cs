@@ -17,15 +17,15 @@ namespace ILGenerator.ClassDefinition
         }
         public void AddProperty(string name, DefinitionType type)
         {
-            Properties.Add(new Property() { Name = name, Type = "DefinitionType::" + type.Name, AutoInitialize=true });
+            Properties.Add(new Property() { Name = name, Type = "DefinitionType::" + type.Name, AutoInitialize = true });
         }
         public void AddPropertyOfList(string name, Type type)
         {
-            Properties.Add(new Property() { Name = name, Type = "CollectionOfSystemType::" + type.FullName, AutoInitialize=true });
+            Properties.Add(new Property() { Name = name, Type = "CollectionOfSystemType::" + type.FullName, AutoInitialize = true });
         }
         public void AddPropertyOfList(string name, DefinitionType type)
         {
-            Properties.Add(new Property() { Name = name, Type = "CollectionOfDefinitionType::" + type.Name, AutoInitialize=true });
+            Properties.Add(new Property() { Name = name, Type = "CollectionOfDefinitionType::" + type.Name, AutoInitialize = true });
         }
     }
 

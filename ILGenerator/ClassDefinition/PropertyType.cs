@@ -5,7 +5,7 @@
         SystemType,
         DefinitionType,
         CollectionOfSystemType,
-        CollectionOfDefinitionType        
+        CollectionOfDefinitionType
     }
 
 }

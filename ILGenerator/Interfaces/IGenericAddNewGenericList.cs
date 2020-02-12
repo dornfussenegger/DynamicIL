@@ -1,6 +1,7 @@
-﻿namespace ILGenerator.Interfaces
+﻿using System.Collections.Generic;
+namespace ILGenerator.Interfaces
 {
-    public interface IGenericAddNewGenericList<T> : System.Collections.Generic.IList<T>
+    public interface IGenericAddNewGenericList<T> : IList<T>
     {
         T CreateAndAdd();
         T Create();

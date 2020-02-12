@@ -1,159 +1,170 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
 namespace ILGenerator.BaseClasses.NotifyPropertyChangedBaseCreator
 {
 
-	public class NotifyPropertyChangedProperty : Property
+    public class NotifyPropertyChangedProperty : Property
     {
 
-		public NotifyPropertyChangedProperty(CustomTypeBase ct, string name, Type type) : base(ct, name, type)
-		{
+        public NotifyPropertyChangedProperty(CustomTypeBase ct, string name, Type type) : base(ct, name, type)
+        {
 
-			var field = ct.TypeBuilder.DefineField(this.FieldName, type, FieldAttributes.Private);
+            var field = ct.TypeBuilder.DefineField(this.FieldName, type, FieldAttributes.Private);
 
-			this.FieldInfo = field;
+            this.FieldInfo = field;
 
-			MethodAttributes getSetAttr = MethodAttributes.Public |
-					   MethodAttributes.SpecialName | MethodAttributes.HideBySig;
-
-
-			MethodBuilder propertyGetAccessor = ct.TypeBuilder.DefineMethod(
-					"get_" + name,
-					getSetAttr,
-					type,
-					Type.EmptyTypes);
-
-			this.PropertyGetter = propertyGetAccessor;
-
-			// GET
-			var fieldGetIL = propertyGetAccessor.GetILGenerator();
-			var fieldGetIL_loc1 = fieldGetIL.DeclareLocal(type);
-			fieldGetIL.Emit(OpCodes.Ldarg_0);
-			fieldGetIL.Emit(OpCodes.Ldfld, field);
-			fieldGetIL.Emit(OpCodes.Ret);
-
-			MethodBuilder propertySetAccessor = ct.TypeBuilder.DefineMethod(
-				"set_" + name,
-				getSetAttr,
-				null,
-				new Type[] { type });
-
-			this.PropertySetter = propertySetAccessor;
-
-			// SET
-			var fieldSetIL = propertySetAccessor.GetILGenerator();
+            MethodAttributes getSetAttr = MethodAttributes.Public |
+                       MethodAttributes.SpecialName | MethodAttributes.HideBySig;
 
 
-			// DECLARE LOCALS
-			var loc1 = fieldSetIL.DeclareLocal(type);
-			var loc2 = fieldSetIL.DeclareLocal(typeof(bool));
+            MethodBuilder propertyGetAccessor = ct.TypeBuilder.DefineMethod(
+                    "get_" + name,
+                    getSetAttr,
+                    type,
+                    Type.EmptyTypes);
 
-			// DECLARE LABELS
-			var IL_003e = fieldSetIL.DefineLabel();
+            this.PropertyGetter = propertyGetAccessor;
 
-			// IL_0000: nop
-			fieldSetIL.Emit(OpCodes.Nop);
+            // GET
+            var fieldGetIL = propertyGetAccessor.GetILGenerator();
+            var fieldGetIL_loc1 = fieldGetIL.DeclareLocal(type);
+            fieldGetIL.Emit(OpCodes.Ldarg_0);
+            fieldGetIL.Emit(OpCodes.Ldfld, field);
+            fieldGetIL.Emit(OpCodes.Ret);
 
-			// //  Guid guid = backGuidString;
-			// IL_0001: ldarg.0
-			fieldSetIL.Emit(OpCodes.Ldarg_0);
+            MethodBuilder propertySetAccessor = ct.TypeBuilder.DefineMethod(
+                "set_" + name,
+                getSetAttr,
+                null,
+                new Type[] { type });
 
-			// IL_0002: ldfld valuetype [mscorlib]System.Guid ILGenerator.Extraction.PropertyChangedTest::backGuidString
-			fieldSetIL.Emit(OpCodes.Ldfld, field);
+            this.PropertySetter = propertySetAccessor;
 
-			// IL_0007: stloc.0
-			fieldSetIL.Emit(OpCodes.Stloc_0);
+            // SET
+            var fieldSetIL = propertySetAccessor.GetILGenerator();
 
-			// //  if (object.Equals(guid, value))
-			// IL_0008: ldloc.0
-			fieldSetIL.Emit(OpCodes.Ldloc_0);
 
-			// IL_0009: box [mscorlib]System.Guid
-			if (type.IsValueType) fieldSetIL.Emit(OpCodes.Box, type);
+            // DECLARE LOCALS
+            var loc1 = fieldSetIL.DeclareLocal(type);
+            var loc2 = fieldSetIL.DeclareLocal(typeof(bool));
 
-			// IL_000e: ldarg.1
-			fieldSetIL.Emit(OpCodes.Ldarg_1);
+            // DECLARE LABELS
+            var IL_003e = fieldSetIL.DefineLabel();
 
-			// IL_000f: box [mscorlib]System.Guid
-			if (type.IsValueType) fieldSetIL.Emit(OpCodes.Box, type);
+            // IL_0000: nop
+            fieldSetIL.Emit(OpCodes.Nop);
 
-			// IL_0014: call bool [mscorlib]System.Object::Equals(object, object)
-			var methodEquals = typeof(System.Object).GetMethod("Equals", new Type[] { typeof(object), typeof(object) });
-			if (methodEquals == null)
-			{
-				throw new Exception("Method not found");
-			}
-			fieldSetIL.Emit(OpCodes.Call, methodEquals);
+            // //  Guid guid = backGuidString;
+            // IL_0001: ldarg.0
+            fieldSetIL.Emit(OpCodes.Ldarg_0);
 
-			// IL_0019: stloc.1
-			fieldSetIL.Emit(OpCodes.Stloc_1);
+            // IL_0002: ldfld valuetype [mscorlib]System.Guid ILGenerator.Extraction.PropertyChangedTest::backGuidString
+            fieldSetIL.Emit(OpCodes.Ldfld, field);
 
-			// IL_001a: ldloc.1
-			fieldSetIL.Emit(OpCodes.Ldloc_1);
+            // IL_0007: stloc.0
+            fieldSetIL.Emit(OpCodes.Stloc_0);
 
-			// //  (no C# code)
-			// IL_001b: brfalse.s IL_003e
-			fieldSetIL.Emit(OpCodes.Brtrue_S, IL_003e);
+            // //  if (object.Equals(guid, value))
+            // IL_0008: ldloc.0
+            fieldSetIL.Emit(OpCodes.Ldloc_0);
 
-			// IL_001d: nop
-			fieldSetIL.Emit(OpCodes.Nop);
+            // IL_0009: box [mscorlib]System.Guid
+            if (type.IsValueType)
+            {
+                fieldSetIL.Emit(OpCodes.Box, type);
+            }
 
-			// //  backGuidString = value;
-			// IL_001e: ldarg.0
-			fieldSetIL.Emit(OpCodes.Ldarg_0);
+            // IL_000e: ldarg.1
+            fieldSetIL.Emit(OpCodes.Ldarg_1);
 
-			// IL_001f: ldarg.1
-			fieldSetIL.Emit(OpCodes.Ldarg_1);
+            // IL_000f: box [mscorlib]System.Guid
+            if (type.IsValueType)
+            {
+                fieldSetIL.Emit(OpCodes.Box, type);
+            }
 
-			// IL_0020: stfld valuetype [mscorlib]System.Guid ILGenerator.Extraction.PropertyChangedTest::backGuidString
-			fieldSetIL.Emit(OpCodes.Stfld, field);
+            // IL_0014: call bool [mscorlib]System.Object::Equals(object, object)
+            var methodEquals = typeof(System.Object).GetMethod("Equals", new Type[] { typeof(object), typeof(object) });
+            if (methodEquals == null)
+            {
+                throw new Exception("Method not found");
+            }
+            fieldSetIL.Emit(OpCodes.Call, methodEquals);
 
-			// //  OnPropertyChanged("MyGuidProperty", guid, value);
-			// IL_0025: ldarg.0
-			fieldSetIL.Emit(OpCodes.Ldarg_0);
+            // IL_0019: stloc.1
+            fieldSetIL.Emit(OpCodes.Stloc_1);
 
-			// IL_0026: ldstr "MyGuidProperty"
-			fieldSetIL.Emit(OpCodes.Ldstr, Name);
+            // IL_001a: ldloc.1
+            fieldSetIL.Emit(OpCodes.Ldloc_1);
 
-			// IL_002b: ldloc.0
-			fieldSetIL.Emit(OpCodes.Ldloc_0);
+            // //  (no C# code)
+            // IL_001b: brfalse.s IL_003e
+            fieldSetIL.Emit(OpCodes.Brtrue_S, IL_003e);
 
-			// IL_002c: box [mscorlib]System.Guid
-			if (type.IsValueType) fieldSetIL.Emit(OpCodes.Box, type);
+            // IL_001d: nop
+            fieldSetIL.Emit(OpCodes.Nop);
 
-			// IL_0031: ldarg.1
-			fieldSetIL.Emit(OpCodes.Ldarg_1);
+            // //  backGuidString = value;
+            // IL_001e: ldarg.0
+            fieldSetIL.Emit(OpCodes.Ldarg_0);
 
-			// IL_0032: box [mscorlib]System.Guid
-			if (type.IsValueType) fieldSetIL.Emit(OpCodes.Box, type);
+            // IL_001f: ldarg.1
+            fieldSetIL.Emit(OpCodes.Ldarg_1);
 
-			// IL_0037: callvirt instance void [ILGenerator]ILGenerator.BaseClasses.NotifyPropertyChangedBase::OnPropertyChanged(string, object, object)
-			MethodInfo methodOnPropertyChanged = null;
-			var useChangeTracker = ((NotifyPropertyChangedBaseCreator.NotifyPropertyChangedType)this.CustomTypeBase).UseChangeTracker;
-			if (useChangeTracker)
-			{
+            // IL_0020: stfld valuetype [mscorlib]System.Guid ILGenerator.Extraction.PropertyChangedTest::backGuidString
+            fieldSetIL.Emit(OpCodes.Stfld, field);
 
-				methodOnPropertyChanged = typeof(NotifyPropertyChangedBaseWithChangeTracker).GetMethod("OnPropertyChanged", new Type[] { typeof(string), typeof(object), typeof(object) });
-			}
-			else
-			{
-				methodOnPropertyChanged = typeof(NotifyPropertyChangedBase).GetMethod("OnPropertyChanged", new Type[] { typeof(string), typeof(object), typeof(object) });
-			}
-			if (methodOnPropertyChanged == null)
-			{
-				throw new Exception("Method not found");
-			}
+            // //  OnPropertyChanged("MyGuidProperty", guid, value);
+            // IL_0025: ldarg.0
+            fieldSetIL.Emit(OpCodes.Ldarg_0);
 
-			fieldSetIL.Emit(OpCodes.Callvirt, methodOnPropertyChanged);
+            // IL_0026: ldstr "MyGuidProperty"
+            fieldSetIL.Emit(OpCodes.Ldstr, Name);
 
-			fieldSetIL.MarkLabel(IL_003e);
-			fieldSetIL.Emit(OpCodes.Ret);		
+            // IL_002b: ldloc.0
+            fieldSetIL.Emit(OpCodes.Ldloc_0);
 
-			PropertyBuilder.SetGetMethod(propertyGetAccessor);
-			PropertyBuilder.SetSetMethod(propertySetAccessor);
-		}
-	}
+            // IL_002c: box [mscorlib]System.Guid
+            if (type.IsValueType)
+            {
+                fieldSetIL.Emit(OpCodes.Box, type);
+            }
+
+            // IL_0031: ldarg.1
+            fieldSetIL.Emit(OpCodes.Ldarg_1);
+
+            // IL_0032: box [mscorlib]System.Guid
+            if (type.IsValueType)
+            {
+                fieldSetIL.Emit(OpCodes.Box, type);
+            }
+
+            var useChangeTracker = ((NotifyPropertyChangedType)this.CustomTypeBase).UseChangeTracker;
+
+            // IL_0037: callvirt instance void [ILGenerator]ILGenerator.BaseClasses.NotifyPropertyChangedBase::OnPropertyChanged(string, object, object)
+            MethodInfo methodOnPropertyChanged;
+            if (useChangeTracker)
+            {
+                methodOnPropertyChanged = typeof(NotifyPropertyChangedBaseWithChangeTracker).GetMethod("OnPropertyChanged", new Type[] { typeof(string), typeof(object), typeof(object) });
+            }
+            else
+            {
+                methodOnPropertyChanged = typeof(NotifyPropertyChangedBase).GetMethod("OnPropertyChanged", new Type[] { typeof(string), typeof(object), typeof(object) });
+            }
+            if (methodOnPropertyChanged == null)
+            {
+                throw new Exception("Method not found");
+            }
+
+            fieldSetIL.Emit(OpCodes.Callvirt, methodOnPropertyChanged);
+
+            fieldSetIL.MarkLabel(IL_003e);
+            fieldSetIL.Emit(OpCodes.Ret);
+
+            PropertyBuilder.SetGetMethod(propertyGetAccessor);
+            PropertyBuilder.SetSetMethod(propertySetAccessor);
+        }
+    }
 }

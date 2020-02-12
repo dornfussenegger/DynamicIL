@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ILGenerator.BaseClasses.NotifyPropertyChangedBaseCreator
 {
@@ -15,14 +11,14 @@ namespace ILGenerator.BaseClasses.NotifyPropertyChangedBaseCreator
         public override void OnBeforeBuild()
         {
             base.OnBeforeBuild();
-            
+
             var setPropertyValueMethod = TypeBuilder.DefineMethod("SetPropertyValue",
              MethodAttributes.Public |
                 MethodAttributes.Virtual |
                 MethodAttributes.HideBySig,
              typeof(void), new[] { typeof(string), typeof(object) });
-            setPropertyValueMethod.DefineParameter(1, System.Reflection.ParameterAttributes.None, "property");
-            setPropertyValueMethod.DefineParameter(2, System.Reflection.ParameterAttributes.None, "newValue");
+            setPropertyValueMethod.DefineParameter(1, ParameterAttributes.None, "property");
+            setPropertyValueMethod.DefineParameter(2, ParameterAttributes.None, "newValue");
 
             var ilSet = setPropertyValueMethod.GetILGenerator();
             WriteSetPropertyValueMethod(ilSet);
@@ -37,13 +33,13 @@ namespace ILGenerator.BaseClasses.NotifyPropertyChangedBaseCreator
 
             // GET
             var getPropertyValueMethod = TypeBuilder.DefineMethod("GetPropertyValue",
-              
+
              MethodAttributes.Public |
                 MethodAttributes.Virtual |
-                MethodAttributes.HideBySig, 
+                MethodAttributes.HideBySig,
 
              typeof(object), new[] { typeof(string) });
-            getPropertyValueMethod.DefineParameter(1, System.Reflection.ParameterAttributes.None, "property");
+            getPropertyValueMethod.DefineParameter(1, ParameterAttributes.None, "property");
 
             var ilGet = getPropertyValueMethod.GetILGenerator();
             WriteGetPropertyValueMethod(ilGet);
@@ -82,7 +78,7 @@ namespace ILGenerator.BaseClasses.NotifyPropertyChangedBaseCreator
         public override void AddPropertyGetAndSet()
         {
             // Ignore
-            
+
         }
     }
 }

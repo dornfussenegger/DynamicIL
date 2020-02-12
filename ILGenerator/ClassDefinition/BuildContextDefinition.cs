@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ILGenerator.ClassDefinition
 {
@@ -12,9 +10,11 @@ namespace ILGenerator.ClassDefinition
 
         public DefinitionType AddType(string name, DefinitionTypeEnums type)
         {
-            DefinitionType t = new DefinitionType();
-            t.Name = name;
-            t.Type = type;
+            DefinitionType t = new DefinitionType
+            {
+                Name = name,
+                Type = type
+            };
             Types.Add(t);
             return t;
         }
@@ -22,8 +22,8 @@ namespace ILGenerator.ClassDefinition
         private class ToCompile
         {
             public DefinitionType DefinitionType { get; set; }
-            public ILGenerator.CustomTypeBase CompileType { get; set; }
-           
+            public CustomTypeBase CompileType { get; set; }
+
         }
         public Type[] Compile(string assemblyName)
         {
@@ -36,7 +36,7 @@ namespace ILGenerator.ClassDefinition
                 switch (t.Type)
                 {
                     case DefinitionTypeEnums.SimpleType:
-                        l.Add(new ToCompile() { CompileType= ct.CreateNewSimpleType(t.Name).SetCustomCustomTypeFlagsFlags(CustomTypeBaseFlags.AddIInitializeableImplementation,true), DefinitionType=t });
+                        l.Add(new ToCompile() { CompileType = ct.CreateNewSimpleType(t.Name).SetCustomCustomTypeFlagsFlags(CustomTypeBaseFlags.AddIInitializeableImplementation, true), DefinitionType = t });
                         break;
                     case DefinitionTypeEnums.NotifyPropertyChanged:
                         l.Add(new ToCompile() { CompileType = ct.CreateNewNotifyPropertyChangedType(t.Name, false).SetCustomCustomTypeFlagsFlags(CustomTypeBaseFlags.AddIInitializeableImplementation, true), DefinitionType = t });

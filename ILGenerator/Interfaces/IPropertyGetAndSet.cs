@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ILGenerator.Interfaces
+﻿namespace ILGenerator.Interfaces
 {
     public interface IPropertyGetAndSet
     {
@@ -12,6 +6,6 @@ namespace ILGenerator.Interfaces
         object GetPropertyValue(string propertyName);
     }
 
-    
-    
+
+
 }
