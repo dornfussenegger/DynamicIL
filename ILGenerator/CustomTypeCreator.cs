@@ -44,7 +44,6 @@ namespace ILGenerator
             return t;
         }
 
-
         public Type[] Build()
         {
             foreach (var item in this.CustomTypes)

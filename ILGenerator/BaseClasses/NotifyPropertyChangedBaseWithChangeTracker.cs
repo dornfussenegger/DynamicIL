@@ -5,13 +5,13 @@
         public ChangeTracker ChangeTracker { get; private set; }
         public NotifyPropertyChangedBaseWithChangeTracker()
         {
-            ChangeTracker = new ChangeTracker();
+            ChangeTracker = new ChangeTracker(this);
         }
 
         public override void OnPropertyChanged(string propertyName, object oldValue, object newValue)
         {
-            ChangeTracker?.Changed(propertyName, oldValue, newValue);
             base.OnPropertyChanged(propertyName, oldValue, newValue);
+            ChangeTracker?.OnChanged(propertyName, oldValue, newValue);
         }
     }
 }

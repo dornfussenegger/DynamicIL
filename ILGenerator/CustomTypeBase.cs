@@ -10,6 +10,8 @@ namespace ILGenerator
     public abstract class CustomTypeBase
     {
 
+        public object Tag { get; set; }
+
         public virtual void OnBeforeBuild()
         {
             if (this.GetCustomTypeBaseFlag(CustomTypeBaseFlags.AddIInitializeableImplementation))
@@ -17,6 +19,7 @@ namespace ILGenerator
                 AddIInitializeableImplementation();
             }
         }
+
         public virtual void AddIPropertyDescriptorImplementation()
         {
             if (this.ImplementInterface(typeof(Interfaces.IPropertyDescriptor)) == false)
@@ -135,12 +138,12 @@ namespace ILGenerator
         public TypeBuilder TypeBuilder { get; internal set; }
         public Type BuildType { get; internal set; }
 
-        public CustomTypeBase(BuildContext bc, string name)
+        public CustomTypeBase(BuildContext buildContext, string name)
         {
             this.Name = name;
-            this.BuildContext = bc;
+            this.BuildContext = buildContext;
 
-            var dt = bc.CreateDynamicType(name);
+            var dt = buildContext.CreateDynamicType(name);
             TypeBuilder = dt;
         }
 
@@ -172,7 +175,6 @@ namespace ILGenerator
         {
             return this.AddProperty(name, typeof(TProperty));
         }
-
         public bool ImplementInterface(Type interfaceType)
         {
             if (!ImplementedInterfaces.Contains(interfaceType))
@@ -186,6 +188,8 @@ namespace ILGenerator
                 return false;
             }
         }
+
+       
 
         public virtual void AddPropertyGetAndSet()
         {
