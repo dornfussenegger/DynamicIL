@@ -8,7 +8,24 @@ namespace ILGenerator.Test.NetCoreTests
     public class ILGeneratorTests
     {
 
+
         [TestMethod]
+        public void TypeOfLongTest()
+        {
+            CustomTypeCreator ct = new CustomTypeCreator("testassembly");
+            var cTest = ct.CreateNewNotifyPropertyChangedType("Test");
+            cTest.AddProperty("TLong", typeof(long));
+            cTest.AddIPropertyDescriptorImplementation();
+            var instance = ct.Build().FirstOrDefault().CreateInstanceWithPropertyGetAndSet();
+
+            instance.SetPropertyValue("TLong", (long)2020);
+
+            Assert.IsTrue(instance.GetPropertyValue<long>("TLong") == 2020);
+
+        }
+
+
+            [TestMethod]
         public void GeneralTest()
         {
             var b = new ClassDefinition.BuildContextDefinition();
